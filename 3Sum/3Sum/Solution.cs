@@ -9,31 +9,38 @@ namespace _3Sum
         {
             IList<IList<int>> result = new List<IList<int>>();
             Array.Sort(nums);
-            if (nums.Length < 3) { return result; }
             for (int i = 0; i < nums.Length - 2; i++)
             {
-                if (i > 0 && nums[i] == nums[i - 1]) { continue; }
-                else if (nums[i] > 0) { break; }
+                if (nums[i] > 0) { break; }
+                else if (i > 0 && nums[i] == nums[i - 1]) { continue; }
                 else
                 {
                     for (int j = i + 1; j < nums.Length - 1; j++)
                     {
-                        if (j > i + 1 && nums[j] == nums[j - 1]) { continue; }
-                        else if (nums[i] + nums[j] > 0) { break; }
+                        if (nums[i] + nums[j] > 0) { break; }
+                        else if (j > i + 1 && nums[j] == nums[j - 1]) { continue; }
                         else
                         {
-                            for (int k = j + 1; k < nums.Length; k++)
+                            int low = j + 1; int high = nums.Length - 1; int mid = (low + high) / 2;
+                            do
                             {
-                                if (k > j + 1 && nums[k] == nums[k - 1]) { continue; }
+                                mid = (low + high) / 2;
+                                if (nums[i] + nums[j] + nums[mid] > 0)
+                                {
+                                    high = mid - 1;;
+                                }
+                                else if (nums[i] + nums[j] + nums[mid] < 0)
+                                {
+                                    low = mid + 1;
+                                }
                                 else
                                 {
-                                    if (nums[i] + nums[j] + nums[k] == 0)
-                                    {
-                                        var x = new List<int>() { nums[i], nums[j], nums[k] };
-                                        result.Add(x);
-                                    }
+                                    result.Add(new List<int>() { nums[i], nums[j], nums[mid] });
+                                    break;
                                 }
+
                             }
+                            while (high >= low );
                         }
                     }
                 }
